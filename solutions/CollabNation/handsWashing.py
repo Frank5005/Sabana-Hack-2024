@@ -14,6 +14,8 @@ import mediapipe as mp
 import numpy as np
 #from tensorflow.keras.models import load_model
 from datetime import datetime
+import joblib
+from sklearn.preprocessing import LabelEncoder
 
 def distancia_euclidiana(p1, p2):
     d = ((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2) ** 0.5
@@ -56,7 +58,9 @@ def detect_object_in_proximity(frame, bbox, threshold=1000):
     count_white_pixels = cv2.countNonZero(thresh_hand_area)
     return count_white_pixels > threshold
 
-
+# Cargar los modelos entrenados
+steps = ["Step_1", "Step_2_Left", "Step_2_Right", "Step_3", "Step_4_Left", "Step_4_Right", "Step_5_Left", "Step_5_Right", "Step_6_Left", "Step_6_Right", "Step_7_Left", "Step_7_Right"]
+models = {step: joblib.load(f"model_{step}.joblib") for step in steps}
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -154,61 +158,37 @@ with mp_hands.Hands(
                     cv2.putText(image, "Objeto detectado cerca de la mano, alejarlo si es posible", (bbox[0][0], bbox[0][1] - 10),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
                 
+                #Modeloooo
                 
-                
-                # Detección a través de las distancias
-                if abs(thumb_tip[1] - index_finger_pip[1]) <45 \
-                    and abs(thumb_tip[1] - middle_finger_pip[1]) < 30 and abs(thumb_tip[1] - ring_finger_pip[1]) < 30\
-                    and abs(thumb_tip[1] - pinky_pip[1]) < 30:
-                    cv2.putText(image, 'A', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
-                    
-                   
-                elif index_finger_pip[1] - index_finger_tip[1]>0 and pinky_pip[1] - pinky_tip[1] > 0 and \
-                    middle_finger_pip[1] - middle_finger_tip[1] >0 and ring_finger_pip[1] - ring_finger_tip[1] >0 and \
-                        middle_finger_tip[1] - ring_finger_tip[1] <0 and abs(thumb_tip[1] - ring_finger_pip2[1])<40:
-                    cv2.putText(image, 'B', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
-                    
-                elif abs(index_finger_tip[1] - thumb_tip[1]) < 360 and \
-                    index_finger_tip[1] - middle_finger_pip[1]<0 and index_finger_tip[1] - middle_finger_tip[1] < 0 and \
-                        index_finger_tip[1] - index_finger_pip[1] > 0:
-                   cv2.putText(image, 'C', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
-                
-                elif distancia_euclidiana(thumb_tip, middle_finger_tip) < 65 \
-                    and distancia_euclidiana(thumb_tip, ring_finger_tip) < 65 \
-                    and  pinky_pip[1] - pinky_tip[1]<0\
-                    and index_finger_pip[1] - index_finger_tip[1]>0:
-                    cv2.putText(image, 'D', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
-                   
-                elif index_finger_pip[1] - index_finger_tip[1] < 0 and pinky_pip[1] - pinky_tip[1] < 0 and \
-                    middle_finger_pip[1] - middle_finger_tip[1] < 0 and ring_finger_pip[1] - ring_finger_tip[1] < 0 \
-                        and abs(index_finger_tip[1] - thumb_tip[1]) < 100 and \
-                            thumb_tip[1] - index_finger_tip[1] > 0 \
-                            and thumb_tip[1] - middle_finger_tip[1] > 0 \
-                            and thumb_tip[1] - ring_finger_tip[1] > 0 \
-                            and thumb_tip[1] - pinky_tip[1] > 0:
+                # Extraer los landmarks y agregarlos a la secuencia
+                landmarks = []
+                for lm in hand_landmarks.landmark:
+                    landmarks.extend([lm.x * frame_width, lm.y * frame_height, lm.z])
 
-                    cv2.putText(image, 'E', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
-                    
-                elif  pinky_pip[1] - pinky_tip[1] > 0 and middle_finger_pip[1] - middle_finger_tip[1] > 0 and \
-                    ring_finger_pip[1] - ring_finger_tip[1] > 0 and index_finger_pip[1] - index_finger_tip[1] < 0 \
-                        and abs(thumb_pip[1] - thumb_tip[1]) > 0 and distancia_euclidiana(index_finger_tip, thumb_tip) <65:
+                sequence.append(landmarks)
+                
+                # Clasificar si la secuencia alcanza la longitud deseada
+                if len(sequence) == sequence_length:
+                    input_sequence = np.array(sequence).flatten().reshape(1, -1)
+                    detected_step = None
+                    highest_prob = 0
 
-                    cv2.putText(image, 'F', (700, 150), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 
-                                3.0, (0, 0, 255), 6)
-                    
-                print("pulgar", thumb_tip[1])
-                print("dedo indice",index_finger_tip[1])
+                    # Evaluar con cada modelo
+                    for step, model in models.items():
+                        prediction = model.predict(input_sequence)
+                        prob = model.predict_proba(input_sequence)[0][1]  # Probabilidad de la clase positiva
+
+                        if prob > highest_prob:
+                            highest_prob = prob
+                            detected_step = step
+
+                    # Mostrar el paso detectado en pantalla
+                    if detected_step:
+                        cv2.putText(image, f'Paso detectado: {detected_step}', (50, 50), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+
+                    # Reiniciar la secuencia para la siguiente predicción
+                    sequence.pop(0)
                 
     # Guardar el fotograma en el archivo de video
     out.write(image)
@@ -216,6 +196,8 @@ with mp_hands.Hands(
     cv2.imshow('MediaPipe Hands', image)
     if cv2.waitKey(5) & 0xFF == 27:
       break
+
 cap.release()
+out.release()
 cv2.destroyAllWindows()
 

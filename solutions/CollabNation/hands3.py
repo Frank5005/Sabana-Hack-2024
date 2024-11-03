@@ -1,9 +1,8 @@
 import cv2
 import os
 import numpy as np
-
 # Cambiar valor
-dataPath = r'C:/Users/frank/GitHub Projects/Sabana-Hack-2024/solutions/fotos'
+dataPath = 'C:/Users/frank/GitHub Projects/Sabana-Hack-2024/solutions/CollabNation/fotos2'
 peopleList =  os.listdir(dataPath)
 print('Personas en la DB: ', peopleList)
 
@@ -34,7 +33,7 @@ print("Etiquetas: ", np.count_nonzero(np.array(labels)==0))
 print("Etiquetas: ", np.count_nonzero(np.array(labels)==1))
 
 # face_recognizer = cv2.face.EigenFaceRecognizer_create()
-# face_recognizer = cv2.face.FisherFaceRecognizer_create()
+# face_recognizer = cv2.face.FisherFac,eRecognizer_create()
 #face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 
 # print("Training...")

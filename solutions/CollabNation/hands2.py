@@ -2,8 +2,8 @@ import cv2
 import os
 import imutils
 
-personName = 'fotos'
-dataPath = r'C:\Users\frank\GitHub Projects\Sabana-Hack-2024\solutions'
+personName = 'fotos2'
+dataPath = 'C:/Users/frank/GitHub Projects/Sabana-Hack-2024/solutions/CollabNation'
 personPath = dataPath +  '/' + personName
 
 if not os.path.exists(personPath):
