@@ -1,47 +1,42 @@
 import cv2
-import os
+from matplotlib import pyplot
 import imutils
+from mtcnn.mtcnn import MTCNN
+import os
 
-personName = 'fotos2'
-dataPath = 'C:/Users/frank/GitHub Projects/Sabana-Hack-2024/solutions/CollabNation'
-personPath = dataPath +  '/' + personName
+direccion = 'C:/Users/frank/GitHub Projects/Sabana-Hack-2024/solutions/CollabNation/fotos'
+nombre = "persona_sin_tapabocas"
+# nombre = "persona_con_tapabocas"
+carpeta = direccion + '/' + nombre
 
-if not os.path.exists(personPath):
-    print("Capeta ", personPath, " creada")
-    os.makedirs(personPath)
+if not os.path.exists(carpeta):
+    print('Carpeta creada: ', carpeta)
+    os.makedirs(carpeta)
 
 
-cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-
-faceClassif = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml' )
-cont = 0
+detector = MTCNN()
+cap = cv2.VideoCapture(0)
+count = 0
 
 while True:
-    ret,  frame = cap.read()
-    if ret ==  False: 
-        break
-    frame = imutils.resize(frame, width=320)
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    ret, frame = cap.read()
+    gris = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    copia = frame.copy()
 
-    auxFrame = frame.copy()
+    caras = detector.detect_faces(copia)
 
-    faces = faceClassif.detectMultiScale(gray, 1.3,  5)
+    for i in range(len(caras)):
+        x1,y1,ancho,alto = caras[i]['box']
+        x2,y2 = x1 + ancho, y1 + alto
+        cara_reg = frame[y1:y2, x1:x2]
+        cara_reg = cv2.resize(cara_reg, (150, 200), interpolation = cv2.INTER_CUBIC)
+        cv2.imwrite(carpeta + "/rostro_{}.jpg".format(count), cara_reg)
+        count = count  + 1
 
-    for(x,y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2 )
-        rostro = auxFrame[y:y+h, x:x+w]
-        rostro =  cv2.resize(rostro, (720, 720), interpolation=cv2.INTER_CUBIC)
-        cv2.imwrite(personPath+ '/rostro_{}.jpg'.format(cont), rostro)
-        cont = cont + 1
+    cv2.imshow("Training", frame)
 
-    cv2.imshow('frame', frame)
-
-    k = cv2.waitKey(1)
-    if k == 27 or cont >=300:
-        break
-
-
-    if cv2.waitKey(1) == 27:
+    t = cv2.waitKey(1)
+    if t == 27 or count >= 300:
         break
 
 cap.release()
