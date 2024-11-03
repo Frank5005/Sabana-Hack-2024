@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 # Cambiar valor
-dataPath = r'C:\Users\frank\GitHub Projects\Sabana-Hack-2024\solutions'
+dataPath = r'C:/Users/frank/GitHub Projects/Sabana-Hack-2024/solutions/fotos'
 peopleList =  os.listdir(dataPath)
 print('Personas en la DB: ', peopleList)
 
