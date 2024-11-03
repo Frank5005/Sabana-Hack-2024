@@ -11,6 +11,9 @@
 
 import cv2
 import mediapipe as mp
+import numpy as np
+#from tensorflow.keras.models import load_model
+from datetime import datetime
 
 def distancia_euclidiana(p1, p2):
     d = ((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2) ** 0.5
@@ -64,6 +67,16 @@ cap = cv2.VideoCapture(0)
 
 cap.set(3,1920)
 cap.set(4,1080)
+
+# Configuración de guardado de video
+frame_width = int(cap.get(3))
+frame_height = int(cap.get(4))
+output_filename = f"output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.mp4"
+out = cv2.VideoWriter(output_filename, cv2.VideoWriter_fourcc(*'mp4v'), 10, (frame_width, frame_height))
+
+sequence = []
+sequence_length = 30
+
 with mp_hands.Hands(
     model_complexity=1,
     min_detection_confidence=0.7,
@@ -197,6 +210,9 @@ with mp_hands.Hands(
                 print("pulgar", thumb_tip[1])
                 print("dedo indice",index_finger_tip[1])
                 
+    # Guardar el fotograma en el archivo de video
+    out.write(image)
+    
     cv2.imshow('MediaPipe Hands', image)
     if cv2.waitKey(5) & 0xFF == 27:
       break
