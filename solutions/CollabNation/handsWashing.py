@@ -31,7 +31,9 @@ def draw_bounding_box(image, hand_landmarks):
     
     # Draw the bounding box
     cv2.rectangle(image, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
-    
+
+
+
 # Para la detección de objetos
 
 def get_hand_bounding_box(landmarks, frame_shape, margin=50):
@@ -50,8 +52,6 @@ def detect_object_in_proximity(frame, bbox, threshold=1000):
     _, thresh_hand_area = cv2.threshold(gray_hand_area, 80, 255, cv2.THRESH_BINARY)
     count_white_pixels = cv2.countNonZero(thresh_hand_area)
     return count_white_pixels > threshold
-
-# Fin jejej
 
 
 
@@ -129,8 +129,8 @@ with mp_hands.Hands(
                                 int(hand_landmarks.landmark[5].y * image_height))
                 
                 
-                # Detección de objetos
                 
+                # Detección de objetos
                 bbox = get_hand_bounding_box(hand_landmarks, image.shape)
                 object_detected = detect_object_in_proximity(image, bbox)
 
@@ -142,8 +142,8 @@ with mp_hands.Hands(
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
                 
                 
-                # Detección a través de las distancias
                 
+                # Detección a través de las distancias
                 if abs(thumb_tip[1] - index_finger_pip[1]) <45 \
                     and abs(thumb_tip[1] - middle_finger_pip[1]) < 30 and abs(thumb_tip[1] - ring_finger_pip[1]) < 30\
                     and abs(thumb_tip[1] - pinky_pip[1]) < 30:
