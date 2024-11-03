@@ -10,7 +10,7 @@ manos, y posee una interfaz intuitiva que muestra los pasos y guía al usuario e
 La solución que presentamos se encuentra en versión preliminar.
 
 ## Link al video
-[Video de presentación](URL)
+[[Video de presentación](https://www.canva.com/design/DAGVawVYP-0/SMRyW6uWrsgaEpEjLbzvpw/edit?utm_content=DAGVawVYP-0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)]
 
 ## Ventajas o fortalezas de nuestra propuesta
 1. Posee una interfaz amigable para el usuario, que lo guía en la manera correcta de lavarse las manos.
