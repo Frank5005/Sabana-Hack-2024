@@ -18,12 +18,13 @@ La solución que presentamos se encuentra en versión preliminar.
 3. Detecta facialmente al persona sanitario, de forma que el registro del proceso de lavado de manos va anclado a esa persona que el sistema detectó por su cara.
 
 ## Desventajas o debilidades de nuestra propuesta
-1. ...
-2. ...
+1. Dependencia de la tecnología: El sistema requiere una cámara y software de monitoreo que pueden verse afectados por problemas técnicos, como fallos en la conexión o mal funcionamiento de la cámara, lo que podría interrumpir el registro del lavado de manos.
+2. Privacidad y manejo de datos: La utilización de un detector facial plantea preocupaciones sobre la privacidad del personal, ya que el reconocimiento facial puede ser visto como una invasión a la privacidad y puede generar resistencia por parte del personal sanitario.
+3. Entrenamiento necesario: Aunque la interfaz es intuitiva, puede requerir capacitación adicional para el personal, lo que podría ser un obstáculo en la adopción inicial del sistema.
 
 ## Detalles técnicos
 - **Tecnologías utilizadas**: [Python, opencv, mediapipe, sklearn]
-- **Herramientas usadas**: [Figma, Visual Studio Code, Google Colab, Canva]
+- **Herramientas usadas**: [Figma, Visual Studio Code, Google Colab, Canva, Excel, Power BI, GitHub, SketchUp]
 - **Alcance del prototipo**:
   Nosotros vemos que es posible llevar a cabo esta solución a la realidad, de manera completa, debido a que soluciona la problemática y es económicante viable dado el análisis financiero
   realizado. Adicionalmente, vemos que los elementos con los que cuenta, como la cámara o la pantalla, son de bajo costo y fácil manejo, lo que facilita el llevar a cabo la solución. Para
