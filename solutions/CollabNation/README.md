@@ -14,7 +14,7 @@ La solución que presentamos se encuentra en versión preliminar.
 
 ## Ventajas o fortalezas de nuestra propuesta
 1. Posee una interfaz amigable para el usuario, que lo guía en la manera correcta de lavarse las manos.
-2. Es interactivo, ya que tiene un sistema de recompensas para quien haga un buen lavado de manos.
+2. Es interactivo, es decir, describe facilmente el paso a paso de la técnica del lavado de manos.
 3. Detecta facialmente al persona sanitario, de forma que el registro del proceso de lavado de manos va anclado a esa persona que el sistema detectó por su cara.
 
 ## Desventajas o debilidades de nuestra propuesta
