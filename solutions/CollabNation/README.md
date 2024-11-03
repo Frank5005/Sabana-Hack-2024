@@ -11,6 +11,7 @@ La solución que presentamos se encuentra en versión preliminar.
 
 ## Link al video
 [[Video de presentación](https://www.canva.com/design/DAGVawVYP-0/SMRyW6uWrsgaEpEjLbzvpw/edit?utm_content=DAGVawVYP-0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)]
+[https://youtu.be/drqiKbeHL44]
 
 ## Ventajas o fortalezas de nuestra propuesta
 1. Posee una interfaz amigable para el usuario, que lo guía en la manera correcta de lavarse las manos.
@@ -29,7 +30,7 @@ La solución que presentamos se encuentra en versión preliminar.
   Nosotros vemos que es posible llevar a cabo esta solución a la realidad, de manera completa, debido a que soluciona la problemática y es económicante viable dado el análisis financiero
   realizado. Adicionalmente, vemos que los elementos con los que cuenta, como la cámara o la pantalla, son de bajo costo y fácil manejo, lo que facilita el llevar a cabo la solución. Para
   efectos de la parte financiera, compartiremos la presentación del Pitch, donde se demuestra con datos que la solución es viable:
-[]
+[https://www.figma.com/proto/pm7zMHks7YXh3VAFUZNG8g/Mockup_INC?node-id=21-124&t=gjXkvnIW1gSt8oy3-1]
 
 ## Repositorio del proyecto
 [https://github.com/Frank5005/Sabana-Hack-2024]
