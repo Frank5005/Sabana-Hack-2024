@@ -66,6 +66,9 @@ encoded_labels = label_encoder.fit_transform(labels)
 f1_scores = {}
 roc_auc_scores = {}
 
+# Diccionario para almacenar los modelos entrenados por cada paso
+models = {}
+
 # Realizar el entrenamiento en One-vs-All para cada paso
 for step in np.unique(encoded_labels):
     print(f"\nEntrenando modelo para detectar el paso: {label_encoder.inverse_transform([step])[0]}")
@@ -95,9 +98,12 @@ for step in np.unique(encoded_labels):
 
     print(f"F1 Score para {label_encoder.inverse_transform([step])[0]}: {rf_f1}")
     print(f"ROC AUC para {label_encoder.inverse_transform([step])[0]}: {rf_roc_auc}")
+    
+    # Guardar el modelo en el diccionario con la etiqueta del paso
+    models[label_encoder.inverse_transform([step])[0]] = rf_model
 
 # Guardar cada modelo entrenado para cada paso
-for step, model in zip(np.unique(encoded_labels), [rf_model]):
-    filename = f"model_{label_encoder.inverse_transform([step])[0]}.joblib"
+for step, model in models.items():
+    filename = f"model_{step}.joblib"
     joblib.dump(model, filename)
-    print(f"Modelo para {label_encoder.inverse_transform([step])[0]} guardado como {filename}")
+    print(f"Modelo para {step} guardado como {filename}")
